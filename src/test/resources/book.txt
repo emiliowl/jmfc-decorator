@@ -1,0 +1,9 @@
+11234*67890
+      01 StudentDetails.
+      02 StudentId        	PIC 9(7). 
+      02 StudentName. 
+      03 FirstName     		PIC X(10).
+      03 MiddleInitial 		PIC X. 
+      03 Surname       		PIC X(15).
+
+        

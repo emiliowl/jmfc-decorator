@@ -1,18 +1,33 @@
 <root>
-	<item id='xml_1'>
+	<item id='StudentDetails'>
 
 		<content>
-			<name><![CDATA[Root node 1]]></name>
+			<name><![CDATA[StudentDetails]]></name>
 		</content>
-	</item>
-	<item id='outra_coisa'>
-		<content>
-			<name><![CDATA[Root node 2]]></name>
-		</content>
-		<item id='xml_2'>
+		<item id='StudentId'>
 			<content>
-				<name><![CDATA[Child node 1(from root 2)]]></name>
+				<name><![CDATA[StudentId]]></name>
 			</content>
+		</item>
+		<item id='StudentName'>
+			<content>
+				<name><![CDATA[StudentName]]></name>
+			</content>
+			<item id='FirstName'>
+				<content>
+					<name><![CDATA[FirstName]]></name>
+				</content>
+			</item>
+			<item id='MiddleName'>
+				<content>
+					<name><![CDATA[MiddleName]]></name>
+				</content>
+			</item>
+			<item id='Surname'>
+				<content>
+					<name><![CDATA[Surname]]></name>
+				</content>
+			</item>
 		</item>
 	</item>
 </root>

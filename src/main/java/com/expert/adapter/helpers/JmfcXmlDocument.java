@@ -2,6 +2,7 @@ package com.expert.adapter.helpers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.security.InvalidParameterException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -54,6 +55,63 @@ public class JmfcXmlDocument implements Document {
 	}
 
 	private final Document baseDocument;
+	
+	/**
+	 * This method will add an Item Node (with the Jmfc expected format) into the node informed
+	 * of this XML Document.
+	 * @param id
+	 * @param parentElement
+	 * @return
+	 */
+	public JmfcXmlDocument addItem(String id, String parentElementId) {
+		Element parentElement = this.getElementById(parentElementId);
+		if (parentElement == null) {
+			throw new InvalidParameterException("The parent element informed doesn't exist!");
+		}
+		//creating elements
+		Element newItem = this.createElement("item");
+		Element contentToItem = this.createElement("content");
+		Element nameToContent = this.createElement("name");
+		CDATASection cDataToName = this.createCDATASection(id);
+		//setting the association between elements
+		nameToContent.appendChild(cDataToName);
+		contentToItem.appendChild(nameToContent);
+		newItem.appendChild(contentToItem);
+		newItem.setAttribute("id", id);
+		newItem.setIdAttribute("id", true);
+		//writing elements to root node
+		parentElement.appendChild(newItem);		
+		
+		return this;
+	}
+	
+	/**
+	 * This method will add an Item Node (with the Jmfc expected format) into the root node
+	 * of this XML Document.
+	 * @param id
+	 * @return
+	 */
+	public JmfcXmlDocument addItem(String id) {
+		Element parentElement = (Element)this.getElementsByTagName("root").item(0);
+		if (parentElement == null) {
+			throw new IllegalStateException("Corrupted Document without root node!");
+		}
+		//creating elements
+		Element newItem = this.createElement("item");
+		Element contentToItem = this.createElement("content");
+		Element nameToContent = this.createElement("name");
+		CDATASection cDataToName = this.createCDATASection(id);
+		//setting the association between elements
+		nameToContent.appendChild(cDataToName);
+		contentToItem.appendChild(nameToContent);
+		newItem.appendChild(contentToItem);
+		newItem.setAttribute("id", id);
+		newItem.setIdAttribute("id", true);
+		//writing elements to root node
+		parentElement.appendChild(newItem);		
+		
+		return this;
+	}
 	
 	/**
 	 * return this Document in String format

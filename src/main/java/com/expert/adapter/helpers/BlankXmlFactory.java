@@ -14,6 +14,8 @@ public class BlankXmlFactory {
 	public static JmfcXmlDocument getNewBlankDocument(String rootNodeName) {
 		JmfcXmlDocument doc = new JmfcXmlDocument();
 		Element rootElement = doc.createElement(rootNodeName);
+		rootElement.setAttribute("id", "root");
+		rootElement.setIdAttribute("id", true);
 		doc.appendChild(rootElement);
 		
 		return doc;

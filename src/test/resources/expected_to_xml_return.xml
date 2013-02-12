@@ -1,29 +1,29 @@
-<root>
-	<item id='StudentDetails'>
+<root id="root">
+	<item id="StudentDetails">
 
 		<content>
 			<name><![CDATA[StudentDetails]]></name>
 		</content>
-		<item id='StudentId'>
+		<item id="StudentId">
 			<content>
 				<name><![CDATA[StudentId]]></name>
 			</content>
 		</item>
-		<item id='StudentName'>
+		<item id="StudentName">
 			<content>
 				<name><![CDATA[StudentName]]></name>
 			</content>
-			<item id='FirstName'>
+			<item id="FirstName">
 				<content>
 					<name><![CDATA[FirstName]]></name>
 				</content>
 			</item>
-			<item id='MiddleName'>
+			<item id="MiddleInitial">
 				<content>
-					<name><![CDATA[MiddleName]]></name>
+					<name><![CDATA[MiddleInitial]]></name>
 				</content>
 			</item>
-			<item id='Surname'>
+			<item id="Surname">
 				<content>
 					<name><![CDATA[Surname]]></name>
 				</content>

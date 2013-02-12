@@ -1,24 +1,72 @@
 package com.expert.adapter;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.expert.adapter.helpers.BlankXmlFactory;
+import com.expert.adapter.helpers.JmfcXmlDocument;
 import com.expert.jmfc.util.Book;
 import com.expert.jmfc.util.BusinessException;
 import com.expert.jmfc.util.Field;
 
+/**
+ * This class is the Official decorator implementation for MFBook, which provides extra
+ * functionallity to it as format conversors and another features
+ * @author emiliowl
+ *
+ */
 public class MFBook extends Book {
 	
+	private static final String ROOT_NODE = "root";
 	public Book decoratedBook = null;
 	
 	public MFBook(Book bookToDecorate) {
 		this.decoratedBook = bookToDecorate;
 	}
 	
+	/**
+	 * This method return a {@link String} representation of the Book object in a XML format.
+	 * It build the XML into the expected JMFC format.
+	 * @return
+	 */
 	public String toXml() {
-		String xmlStringRepresentation = BlankXmlFactory.getNewBlankDocument("root").asString();		
-		xmlStringRepresentation = xmlStringRepresentation.replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", "");
+		JmfcXmlDocument xmlDoc = BlankXmlFactory.getNewBlankDocument(ROOT_NODE);
+		
+		populateXmlWithBookData(xmlDoc);
+		
+		String xmlStringRepresentation = xmlDoc.asString().replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", ""); 
 		return xmlStringRepresentation;
+	}
+
+	/**
+	 * This method populates the given (expected to be empty) {@link JmfcXmlDocument} with
+	 * the data from this book object.
+	 * @param xmlDoc
+	 */
+	private void populateXmlWithBookData(JmfcXmlDocument xmlDoc) {
+		populateXmlWithFieldCollectionUntilDeepestLevel(this.getInnerFields().values(), xmlDoc, ROOT_NODE);
+	}
+	
+	/**
+	 * Helper method that populate the given {@link JmfcXmlDocument} with the {@link Collection} 
+	 * given and respecting the given parentElement.
+	 * 
+	 * @param fields
+	 * @param xmlDoc
+	 * @param parentElementId
+	 */
+	private void populateXmlWithFieldCollectionUntilDeepestLevel(Collection<Field> fields, JmfcXmlDocument xmlDoc, String parentElementId) {
+		Iterator<Field> iterator = fields.iterator();
+		while(iterator.hasNext()) {
+			Field field = iterator.next();
+			if (field.hasInnerFields()) {
+				xmlDoc.addItem(field.getName(), parentElementId);
+				populateXmlWithFieldCollectionUntilDeepestLevel(field.getInnerFields().values(), xmlDoc, field.getName());
+			} else {
+				xmlDoc.addItem(field.getName(), parentElementId);
+			}
+		}
 	}
 
 	/**

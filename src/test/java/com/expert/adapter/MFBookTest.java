@@ -18,9 +18,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.expert.adapter.enumeration.FieldProperties;
 import com.expert.jmfc.store.BookStore;
 import com.expert.jmfc.util.BusinessException;
 import com.expert.jmfc.util.Field;
+import com.expert.jmfc.util.FieldType;
 
 /**
  * @author emiliowl
@@ -93,5 +95,16 @@ public class MFBookTest {
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Test
+	public void onCallGetFieldsInfoShouldReturnAMapContainingAllFieldsAndItsPropertiesInOrder() throws BusinessException {
+		MFBook mfbook = new MFBook(BookStore.getBook("book"));
+		Map<String, Map<FieldProperties, String>> fieldsInfo = mfbook.getFieldsInfo();
+		assertEquals(fieldsInfo.get("StudentDetails").get(FieldProperties.FIELD_TYPE), FieldType.GROUP.toString());
+		assertEquals(fieldsInfo.get("StudentId").get(FieldProperties.FIELD_TYPE), FieldType.PIC_9.toString());
+		assertEquals(fieldsInfo.get("StudentName").get(FieldProperties.FIELD_TYPE), FieldType.GROUP.toString());
+		assertEquals(fieldsInfo.get("FirstName").get(FieldProperties.FIELD_TYPE), FieldType.PIC_X.toString());
+		assertEquals(fieldsInfo.get("MiddleInitial").get(FieldProperties.FIELD_TYPE), FieldType.PIC_X.toString());
+		assertEquals(fieldsInfo.get("Surname").get(FieldProperties.FIELD_TYPE), FieldType.PIC_X.toString());
+	}
 }

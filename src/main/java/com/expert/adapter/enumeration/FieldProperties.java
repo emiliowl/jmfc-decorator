@@ -1,0 +1,5 @@
+package com.expert.adapter.enumeration;
+
+public enum FieldProperties {
+	LEVEL, FIELD_TYPE, MAIN_LENGTH, DECIMAL_POINTS, FISICAL_LENGTH, OCCURS_SEQUENCE, MIN_OCCURS, MAX_OCCURS, OCCURS_FIELD_NAME, VALUE;
+}

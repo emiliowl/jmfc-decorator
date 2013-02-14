@@ -1,16 +1,20 @@
 package com.expert.adapter;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.expert.adapter.enumeration.FieldProperties;
 import com.expert.adapter.helpers.BlankXmlFactory;
 import com.expert.adapter.helpers.JmfcXmlDocument;
 import com.expert.jmfc.util.Book;
 import com.expert.jmfc.util.BusinessException;
 import com.expert.jmfc.util.Field;
+import static com.expert.adapter.enumeration.FieldProperties.*
 
-/**
+;/**
  * This class is the Official decorator implementation for MFBook, which provides extra
  * functionallity to it as format conversors and another features
  * @author emiliowl
@@ -67,6 +71,60 @@ public class MFBook extends Book {
 				xmlDoc.addItem(field.getName(), parentElementId);
 			}
 		}
+	}
+	
+	/**
+	 * return a {@link Map} containing the info for all the fields of this book. The Map contains
+	 * the name of the fields as the key and a map containing all the properties of this field 
+	 * (given in the enum {@link FieldProperties}. 
+	 * 
+	 * @return
+	 */
+	public Map<String, Map<FieldProperties, String>> getFieldsInfo() {
+		Map<String, Map<FieldProperties,String>> mapToPopulate = new HashMap<String, Map<FieldProperties,String>>();
+		fillMapWithFieldsInfo(this.getInnerFields().values(), mapToPopulate);
+		return mapToPopulate;
+	}
+	
+	/**
+	 * 
+	 * @param fields
+	 * @param mapToPopulate
+	 */
+	private void fillMapWithFieldsInfo(Collection<Field> fields, Map<String, Map<FieldProperties,String>> mapToPopulate) {
+		Iterator<Field> iterator = fields.iterator();
+		while(iterator.hasNext()) {
+			Field field = iterator.next();
+			if (field.hasInnerFields()) {
+				mapToPopulate.put(field.getName(), getFieldInfo(field));
+				fillMapWithFieldsInfo(field.getInnerFields().values(), mapToPopulate);
+			} else {
+				mapToPopulate.put(field.getName(), getFieldInfo(field));
+			}
+		}
+	}
+	
+	/**
+	 * Return a {@link Map} containin the {@link FieldProperties} as the key and the respective 
+	 * value of it according to given field
+	 * @param field
+	 * @return
+	 */
+	private Map<FieldProperties, String> getFieldInfo(Field field) {
+		Map<FieldProperties, String> fieldInfo = new LinkedHashMap<FieldProperties, String>();
+		
+		fieldInfo.put(LEVEL, "" + field.getLevel());
+		fieldInfo.put(FIELD_TYPE, "" + field.getFieldType());
+		fieldInfo.put(MAIN_LENGTH, "" + field.getMainLenght());
+		fieldInfo.put(DECIMAL_POINTS, "" + field.getDecimalPoints());
+		fieldInfo.put(FISICAL_LENGTH, ""  + field.getFisicalLenght());
+		fieldInfo.put(OCCURS_SEQUENCE, ""  + field.getOccursSequence());
+		fieldInfo.put(MIN_OCCURS, ""  + field.getMinOccurs());
+		fieldInfo.put(MAX_OCCURS, ""  + field.getMaxOccurs());				
+		fieldInfo.put(OCCURS_FIELD_NAME, ""  + field.getOccursFieldName());
+		fieldInfo.put(VALUE, ""  + field.getValue());
+		
+		return fieldInfo;
 	}
 
 	/**
